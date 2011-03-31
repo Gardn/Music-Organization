@@ -1,0 +1,7 @@
+python music organization tool
+
+Program prompts for file path (absolute only for now), and recursively descends into directories from there, until it finds a file.
+	if the file is an mp3, and has the .mp3 extension, it does nothing
+	otherwise, it converts the file to an mp3, with the extension.
+
+
