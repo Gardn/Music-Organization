@@ -4,7 +4,7 @@ import os
 import sys
 import glob
 
-directory = '/home/gardn227/MB2/'
+directory = raw_input('Absolute Directory?')
 match = '*'
 Filelist = glob.glob(directory+match)
 
@@ -29,24 +29,13 @@ def FindFiles(MainDir):
         if os.path.isdir(item):
             FindFiles(item)
         else:
-            (Name, Extension) = os.path.splittext(item)
+            (Name, Extension) = os.path.splitext(item)
             if Extension != '.mp3':
                 NewName = Name.strip() + '.mp3'
                 ffmpeg(item, NewName)
                 
             
                 
+FindFiles(directory)
 
 
-
-'''
-for item in List:
-    if item[-3:] != 'mp3':
-        #workingfile = item[:-3]
-        WorkingFilename = str(item.split('.')[0] + '".mp3')
-        originalFilename = str(item)
-        command = 'ffmpeg -i "' + originalFilename + '" "' + WorkingFilename
-        remove = 'rm "' + item + '"'
-        os.system(command)
-        os.system(remove)
-'''
