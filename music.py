@@ -1,12 +1,13 @@
-#!usr/bin/python
+#!/usr/bin/python
 
 import os
 import sys
 import glob
 
-directory = raw_input('Absolute Directory?')
-match = '*'
-Filelist = glob.glob(directory+match)
+directory = raw_input('Directory? ')
+directory = os.path.abspath(directory)
+match = '/*'
+Filelist = glob.glob(directory + match)
 
 def ffmpeg(originalfile, newfile):
     '''
@@ -14,28 +15,29 @@ def ffmpeg(originalfile, newfile):
     Takes two arguments, the first being the original filename and the second
     being the filename to which you would like to save the result.
     '''
-    command = 'ffmpeg -i "' + originalfile + '" "' + newfile + '"'
+    command = 'ffmpeg -y -i "' + originalfile + '" "' + newfile + '"'
     remove = 'rm "' + originalfile + '"'
     os.system(command)
     os.system(remove)
 
-def FindFiles(MainDir):
-    '''
-    Recursively descends into directories until it finds a file that is not
-    a directory. Executes the requisite action, then backs out one directory
-    and moves into the next sub-directory
-    '''
-    for item in Filelist:
+
+
+def FileHandling(folderlist):
+    dirlist = []
+    filelist = []
+    for item in folderlist:
         if os.path.isdir(item):
-            FindFiles(item)
-        else:
-            (Name, Extension) = os.path.splitext(item)
-            if Extension != '.mp3':
-                NewName = Name.strip() + '.mp3'
-                ffmpeg(item, NewName)
-                
+            dirlist.append(item + '/')
+        if os.path.isfile(item):
+            filelist.append(item)
             
-                
-FindFiles(directory)
+    for item in filelist:
+        newitem = item.strip()
+        newitemlist = item.split()
+        newitem = ''.join(newitemlist)
+        ffmpeg(item, newitem)
+    for item in dirlist:
+        FileHandling(item)
 
 
+FileHandling(Filelist)
